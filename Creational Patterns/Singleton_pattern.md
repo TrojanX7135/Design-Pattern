@@ -4,7 +4,7 @@
 
 ---
 
-<img title="Singleton Pattern" src="https://anywaymeika.files.wordpress.com/2022/03/singleton.png" alt="" data-align="center" style="zoom:100%;">
+<img title="Singleton Pattern" src="https://refactoring.guru/images/patterns/content/singleton/singleton.png" alt="" data-align="center" style="zoom:100%;">
 
     Bạn có thể hình dung Singleton pattern như một ngôi nhà có một chìa khóa duy nhất. Chìa khóa này được sử dụng để mở cửa và truy cập vào bên trong ngôi nhà. Tất cả mọi người muốn vào ngôi nhà đều phải sử dụng chìa khóa đó và không thể tạo ra chìa khóa mới. Điều này đảm bảo rằng chỉ có một cách duy nhất để truy cập vào ngôi nhà và tất cả mọi người đều phải sử dụng cách đó.
 
