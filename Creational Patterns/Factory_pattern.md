@@ -24,16 +24,16 @@ public interface Product {
 }
 
 // Sản phẩm cụ thể 1
-public class ConcreteProduct1 implements Product {
+public class createProduct1 implements Product {
     public void use() {
-        System.out.println("Using ConcreteProduct1");
+        System.out.println("Using createProduct1");
     }
 }
 
 // Sản phẩm cụ thể 2
-public class ConcreteProduct2 implements Product {
+public class createProduct2 implements Product {
     public void use() {
-        System.out.println("Using ConcreteProduct2");
+        System.out.println("Using createProduct2");
     }
 }
 
@@ -41,9 +41,9 @@ public class ConcreteProduct2 implements Product {
 public class ProductFactory {
     public Product createProduct(String type) {
         if ("Product1".equals(type)) {
-            return new ConcreteProduct1();
+            return new createProduct1();
         } else if ("Product2".equals(type)) {
-            return new ConcreteProduct2();
+            return new createProduct2();
         }
         throw new IllegalArgumentException("Invalid product type");
     }
@@ -54,9 +54,9 @@ public class Client {
     public static void main(String[] args) {
         ProductFactory factory = new ProductFactory();
         Product product1 = factory.createProduct("Product1");
-        product1.use();  // Output: "Using ConcreteProduct1"
+        product1.use();  // Output: "Using createProduct1"
         Product product2 = factory.createProduct("Product2");
-        product2.use();  // Output: "Using ConcreteProduct2"
+        product2.use();  // Output: "Using createProduct2"
     }
 }
 
@@ -78,10 +78,10 @@ public class Client {
 ```java
 public class Client {
     public static void main(String[] args) {
-        Product product1 = new ConcreteProduct1();
-        product1.use();  // Output: "Using ConcreteProduct1"
-        Product product2 = new ConcreteProduct2();
-        product2.use();  // Output: "Using ConcreteProduct2"
+        Product product1 = new createProduct1();
+        product1.use();  // Output: "Using createProduct1"
+        Product product2 = new createProduct2();
+        product2.use();  // Output: "Using createProduct2"
     }
 }
 
