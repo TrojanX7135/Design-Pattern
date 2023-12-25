@@ -200,12 +200,12 @@ public class Database {
 public class Program {
     public static void main(String[] args) {
         // Tạo nhiều thể hiện của Database
-        Database db1 = new Database();
+        Database db = new Database();
         Database db2 = new Database();
         Database db3 = new Database();
 
         // Sử dụng các thể hiện đó để thực hiện một truy vấn
-        db1.query("SELECT * FROM users");
+        db.query("SELECT * FROM users");
         db2.query("SELECT * FROM products");
         db3.query("SELECT * FROM order");
 
