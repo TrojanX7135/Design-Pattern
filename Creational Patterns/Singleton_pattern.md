@@ -58,66 +58,44 @@ Các lớp và đối tượng tham gia vào mẫu thiết kế này bao gồm:
 
 
 
-* **Structural code in C#**
+* **Structural code in java**
   Mã cấu trúc này minh họa mẫu Singleton đảm bảo chỉ có một phiên bản duy nhất (singleton) của lớp có thể được tạo ra.
 
-```csharp
+```java
 
-using System;
 
-namespace Singleton.Structural
-{
-    /// <summary>
-    /// Singleton Design Pattern
-    /// </summary>
+public class Singleton {
+    // Tạo một thể hiện duy nhất của Singleton
+    private static Singleton instance;
 
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Constructor is protected -- cannot use new
+    // Làm cho constructor là private để ngăn việc tạo thể hiện mới từ bên ngoài lớp
+    private Singleton() {}
 
-            Singleton s1 = Singleton.Instance();
-            Singleton s2 = Singleton.Instance();
-
-            // Test for same instance
-
-            if (s1 == s2)
-            {
-                Console.WriteLine("Objects are the same instance");
-            }
-
-            // Wait for user
-
-            Console.ReadKey();
+    // Phương thức để lấy thể hiện duy nhất của Singleton
+    public static Singleton getInstance() {
+        // Sử dụng khởi tạo lười biếng.
+        // Lưu ý: cách này không an toàn khi sử dụng đa luồng.
+        if (instance == null) {
+            instance = new Singleton();
         }
+        return instance;
     }
+}
 
-    /// <summary>
-    /// The 'Singleton' class
-    /// </summary>
+public class Program {
+    public static void main(String[] args) {
+        // Constructor là private -- không thể sử dụng new
 
-    public class Singleton
-    {
-        static Singleton instance;
+        Singleton s1 = Singleton.getInstance();
+        Singleton s2 = Singleton.getInstance();
 
-        // Constructor is 'protected'
+        // Kiểm tra xem cả hai thể hiện có phải là cùng một thể hiện không
 
-        protected Singleton()
-        {
+        if (s1 == s2) {
+            System.out.println("Objects are the same instance");
         }
 
-        public static Singleton Instance()
-        {
-            // Uses lazy initialization.
-            // Note: this is not thread safe.
-            if (instance == null)
-            {
-                instance = new Singleton();
-            }
-
-            return instance;
-        }
+        // Chờ người dùng
     }
 }
 
@@ -131,7 +109,7 @@ namespace Singleton.Structural
 Objects are the same instance
 ```
 
->     Đây là một ví dụ về cách triển khai mẫu thiết kế Singleton trong C#. Lớp Singleton có một trường tĩnh `instance` để lưu trữ phiên bản duy nhất của lớp Singleton. Hàm tạo của lớp được đánh dấu là `protected` để ngăn chặn việc khởi tạo trực tiếp bằng từ khóa `new`.
+>     Đây là một ví dụ về cách triển khai mẫu thiết kế `Singleton` trong `java`. Lớp Singleton có một trường tĩnh `instance` để lưu trữ phiên bản duy nhất của lớp `Singleton`. Hàm tạo của lớp được đánh dấu là `protected` để ngăn chặn việc khởi tạo trực tiếp bằng từ khóa `new`.
 > 
 >     Lớp cung cấp một phương thức tĩnh `Instance()` để truy cập vào phiên bản duy nhất của lớp Singleton. Phương thức này sử dụng khởi tạo lười (lazy initialization) để tạo phiên bản duy nhất khi nó được gọi lần đầu tiên. Lưu ý rằng cách triển khai này không an toàn với luồng (thread-safe).
 > 
@@ -139,139 +117,48 @@ Objects are the same instance
 
 
 
-* **Real-world code in C#**
-  Code thực tế này minh họa mẫu Singleton dưới dạng một đối tượng LoadBalancing. Chỉ có một phiên bản duy nhất (singleton) của lớp có thể được tạo ra vì máy chủ có thể tự động bật hoặc tắt và mọi yêu cầu phải đi qua một đối tượng duy nhất có kiến thức về trạng thái của (web) farm.
+* **Real-world code in java**
 
-```csharp
-using System;
-using System.Collections.Generic;
+  Dưới đây là một ví dụ đơn giản về mẫu thiết kế Singleton trong Java, trong đó chúng ta tạo một lớp Database đơn giản
 
-namespace Singleton.RealWorld
-{
-    /// <summary>
-    /// Singleton Design Pattern
-    /// </summary>
+```java
+public class Database {
+    // Tạo một thể hiện duy nhất của Database
+    private static Database instance;
 
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            LoadBalancer b1 = LoadBalancer.GetLoadBalancer();
-            LoadBalancer b2 = LoadBalancer.GetLoadBalancer();
-            LoadBalancer b3 = LoadBalancer.GetLoadBalancer();
-            LoadBalancer b4 = LoadBalancer.GetLoadBalancer();
+    // Làm cho constructor là private để ngăn việc tạo thể hiện mới từ bên ngoài lớp
+    private Database() {}
 
-            // Same instance?
-
-            if (b1 == b2 && b2 == b3 && b3 == b4)
-            {
-                Console.WriteLine("Same instance\n");
-            }
-
-            // Load balance 15 server requests
-
-            LoadBalancer balancer = LoadBalancer.GetLoadBalancer();
-            for (int i = 0; i < 15; i++)
-            {
-                string server = balancer.Server;
-                Console.WriteLine("Dispatch Request to: " + server);
-            }
-
-            // Wait for user
-
-            Console.ReadKey();
+    // Phương thức để lấy thể hiện duy nhất của Database
+    public static synchronized Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
         }
+        return instance;
     }
 
-    /// <summary>
-    /// The 'Singleton' class
-    /// </summary>
+    // Một phương thức đơn giản để minh họa việc sử dụng Database
+    public void query(String sql) {
+        System.out.println("Executing SQL query: " + sql);
+    }
+}
 
-    public class LoadBalancer
-    {
-        static LoadBalancer instance;
-        List<string> servers = new List<string>();
-        Random random = new Random();
+public class Program {
+    public static void main(String[] args) {
+        // Lấy thể hiện duy nhất của Database
+        Database db = Database.getInstance();
 
-        // Lock synchronization object
-
-        private static object locker = new object();
-
-        // Constructor (protected)
-
-        protected LoadBalancer()
-        {
-            // List of available servers
-            servers.Add("ServerI");
-            servers.Add("ServerII");
-            servers.Add("ServerIII");
-            servers.Add("ServerIV");
-            servers.Add("ServerV");
-        }
-
-        public static LoadBalancer GetLoadBalancer()
-        {
-            // Support multithreaded applications through
-            // 'Double checked locking' pattern which (once
-            // the instance exists) avoids locking each
-            // time the method is invoked
-
-            if (instance == null)
-            {
-                lock (locker)
-                {
-                    if (instance == null)
-                    {
-                        instance = new LoadBalancer();
-                    }
-                }
-            }
-
-            return instance;
-        }
-
-        // Simple, but effective random load balancer
-
-        public string Server
-        {
-            get
-            {
-                int r = random.Next(servers.Count);
-                return servers[r].ToString();
-            }
-        }
+        // Sử dụng thể hiện đó để thực hiện một truy vấn
+        db.query("SELECT * FROM users");
     }
 }
 
 
+
 ```
 
-**Output**
+Trong ví dụ trên, `Database` là một lớp có một thể hiện duy nhất, và cung cấp một phương thức để lấy thể hiện đó. `Constructor` của `Database` là `private`, nghĩa là bạn không thể tạo một thể hiện mới của `Database` bằng cách sử dụng từ khóa `new` từ bên ngoài lớp. Thay vào đó, bạn phải sử dụng phương thức `getInstance()` để lấy thể hiện duy nhất của `Database`.
 
-```powershell
-Same instance
-
-ServerIII
-ServerII
-ServerI
-ServerII
-ServerI
-ServerIII
-ServerI
-ServerIII
-ServerIV
-ServerII
-ServerII
-ServerIII
-ServerIV
-ServerII
-ServerIV
-```
-
->     Đây là một ví dụ về cách triển khai mẫu thiết kế Singleton trong C# để tạo một đối tượng LoadBalancer. Lớp LoadBalancer có một trường tĩnh `instance` để lưu trữ phiên bản duy nhất của lớp LoadBalancer. Hàm tạo của lớp được đánh dấu là `protected` để ngăn chặn việc khởi tạo trực tiếp bằng từ khóa `new`.
-> 
->     Lớp cung cấp một phương thức tĩnh `GetLoadBalancer()` để truy cập vào phiên bản duy nhất của lớp LoadBalancer. Phương thức này sử dụng khởi tạo lười (lazy initialization) và kiểm tra khóa đôi (double-checked locking) để đảm bảo rằng chỉ có một phiên bản duy nhất được tạo ra và phương thức này an toàn với luồng (thread-safe).
-> 
->     Trong phương thức `Main`, chúng ta gọi phương thức `GetLoadBalancer()` nhiều lần để lấy các phiên bản của lớp LoadBalancer và kiểm tra xem chúng có phải là cùng một phiên bản hay không bằng cách so sánh chúng với nhau. Sau đó, chúng ta sử dụng thuộc tính `Server` của lớp LoadBalancer để lấy tên máy chủ ngẫu nhiên từ danh sách máy chủ và giả lập việc cân bằng tải 15 yêu cầu máy chủ.
+Mẫu thiết kế Singleton được sử dụng khi bạn muốn đảm bảo rằng một lớp chỉ có một thể hiện duy nhất, và cung cấp một điểm truy cập toàn cục đến thể hiện đó. Mẫu thiết kế này thường được sử dụng cho các trường hợp như quản lý kết nối cơ sở dữ liệu, cửa sổ đăng nhập, v.v. Trong ví dụ này, chúng ta giả định rằng `Database` là một lớp như vậy. Mặc dù trong thực tế, việc quản lý kết nối cơ sở dữ liệu thường phức tạp hơn nhiều và cần phải xử lý các vấn đề như đa luồng, quản lý tài nguyên, v.v. Nhưng hy vọng ví dụ này sẽ giúp bạn hiểu cơ bản về mẫu thiết kế Singleton.
 
 
