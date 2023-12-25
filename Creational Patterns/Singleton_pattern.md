@@ -161,4 +161,43 @@ Trong ví dụ trên, `Database` là một lớp có một thể hiện duy nh�
 
 Mẫu thiết kế Singleton được sử dụng khi bạn muốn đảm bảo rằng một lớp chỉ có một thể hiện duy nhất, và cung cấp một điểm truy cập toàn cục đến thể hiện đó. Mẫu thiết kế này thường được sử dụng cho các trường hợp như quản lý kết nối cơ sở dữ liệu, cửa sổ đăng nhập, v.v. Trong ví dụ này, chúng ta giả định rằng `Database` là một lớp như vậy. Mặc dù trong thực tế, việc quản lý kết nối cơ sở dữ liệu thường phức tạp hơn nhiều và cần phải xử lý các vấn đề như đa luồng, quản lý tài nguyên, v.v. Nhưng hy vọng ví dụ này sẽ giúp bạn hiểu cơ bản về mẫu thiết kế Singleton.
 
+`?` **Trường hợp nếu không dùng singleton Design Pattern**
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class Database {
+    private List<String> servers = new ArrayList<>();
+    private Random random = new Random();
+
+    // Constructor là public, cho phép tạo thể hiện mới từ bên ngoài lớp
+    public Database() {
+    }
+
+    // Load balancer ngẫu nhiên đơn giản nhưng hiệu quả
+    public String getServer() {
+        int r = random.nextInt(servers.size());
+        return servers.get(r);
+    }
+}
+
+public class Program {
+    public static void main(String[] args) {
+        // Tạo nhiều thể hiện của Database
+        Database db1 = new Database();
+        Database db2 = new Database();
+
+        // Sử dụng các thể hiện đó để thực hiện một truy vấn
+        db1.query("SELECT * FROM users");
+        db2.query("SELECT * FROM products");
+    }
+}
+
+
+
+```
+Trong ví dụ trên, bạn có thể thấy rằng chúng ta đã tạo hai thể hiện riêng biệt của lớp `Database`, `db1` và `db2`. Mỗi thể hiện này có thể duy trì trạng thái riêng của nó và hoạt động độc lập với nhau. Tuy nhiên, như đã đề cập ở trên, việc này có thể gây ra các vấn đề khi đối tượng cần duy trì một trạng thái toàn cục hoặc khi việc tạo nhiều thể hiện của đối tượng đó tốn nhiều tài nguyên. Mẫu thiết kế Singleton giúp giải quyết các vấn đề này bằng cách đảm bảo rằng chỉ có một thể hiện duy nhất của lớp được tạo, và cung cấp một điểm truy cập toàn cục đến thể hiện đó. Mẫu thiết kế này giúp giảm sự phức tạp và tăng hiệu suất của ứng dụng.
+
 
