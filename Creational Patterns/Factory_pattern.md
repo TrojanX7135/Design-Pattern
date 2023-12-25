@@ -62,9 +62,12 @@ public class Client {
 
 
 ```
+Trong ví dụ trên, ProductFactory là một Factory, nó tạo ra các đối tượng Product. Các lớp ConcreteProduct1 và ConcreteProduct2 là các lớp cụ thể implement interface Product. Mẫu thiết kế Factory giúp tạo ra các đối tượng mà không cần chỉ định lớp cụ thể của đối tượng đó trong code, giúp tăng tính linh hoạt và tái sử dụng của code.
 
 
 `?` **Trường hợp ta không dùng Factory thì sẽ như thế nào**
+
+Nếu bạn không sử dụng mẫu thiết kế Factory, bạn sẽ phải tạo đối tượng trực tiếp từ các lớp cụ thể. Điều này có thể dẫn đến việc code của bạn trở nên phụ thuộc vào các lớp cụ thể, làm giảm tính linh hoạt và khả năng tái sử dụng code.
 
     Dưới đây là ví dụ nếu không dùng factory pattern...
 
@@ -80,3 +83,5 @@ public class Client {
 
 
 ```
+
+Trong ví dụ trên, có thể thấy rằng chúng ta phải tạo đối tượng trực tiếp từ các lớp ConcreteProduct1 và ConcreteProduct2. Điều này có nghĩa là nếu chúng ta muốn thay đổi loại sản phẩm mà chúng ta tạo (ví dụ: sử dụng một lớp sản phẩm khác như ConcreteProduct3), chúng ta sẽ phải thay đổi code ở nhiều nơi. Điều này làm giảm tính linh hoạt của code và khả năng tái sử dụng. Trái lại, khi sử dụng Factory Design Pattern, chúng ta chỉ cần thay đổi ở một nơi duy nhất: trong Factory. Điều này giúp giữ cho code của chúng ta linh hoạt hơn và dễ dàng tái sử dụng hơn.
