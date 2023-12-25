@@ -147,14 +147,31 @@ public class Program {
     public static void main(String[] args) {
         // Lấy thể hiện duy nhất của Database
         Database db = Database.getInstance();
+        Database db2 = Database.getInstance();
+        Database db3 = Database.getInstance();
 
-        // Sử dụng thể hiện đó để thực hiện một truy vấn
+        // Sử dụng các thể hiện đó để thực hiện một truy vấn
         db.query("SELECT * FROM users");
+        db2.query("SELECT * FROM products");
+        db3.query("SELECT * FROM orders");
+
+        // Kiểm tra xem tất cả các thể hiện có phải là cùng một thể hiện không
+        if (db == db2 && db2 == db3) {
+            System.out.println("All instances are the same.");
+        }
     }
 }
 
 
 
+```
+**Output**
+
+```powershell
+Executing SQL query: SELECT * FROM users
+Executing SQL query: SELECT * FROM products
+Executing SQL query: SELECT * FROM orders
+All instances are the same.
 ```
 
 Trong ví dụ trên, `Database` là một lớp có một thể hiện duy nhất, và cung cấp một phương thức để lấy thể hiện đó. `Constructor` của `Database` là `private`, nghĩa là bạn không thể tạo một thể hiện mới của `Database` bằng cách sử dụng từ khóa `new` từ bên ngoài lớp. Thay vào đó, bạn phải sử dụng phương thức `getInstance()` để lấy thể hiện duy nhất của `Database`.
@@ -187,15 +204,33 @@ public class Program {
         // Tạo nhiều thể hiện của Database
         Database db1 = new Database();
         Database db2 = new Database();
+        Database db3 = new Database();
 
         // Sử dụng các thể hiện đó để thực hiện một truy vấn
         db1.query("SELECT * FROM users");
         db2.query("SELECT * FROM products");
+        db3.query("SELECT * FROM order");
+
+        // Kiểm tra xem tất cả các thể hiện có phải là cùng một thể hiện không
+        if (db == db2 && db2 == db3) {
+            System.out.println("All instances are the same.");
+        } else {
+            System.out.println("All instances are NOT the same.");
+        }
     }
 }
 
 
 
+```
+
+**Output**
+
+```powershell
+Executing SQL query: SELECT * FROM users
+Executing SQL query: SELECT * FROM products
+Executing SQL query: SELECT * FROM orders
+All instances are NOT the same.
 ```
 Trong ví dụ trên, bạn có thể thấy rằng chúng ta đã tạo hai thể hiện riêng biệt của lớp `Database`, `db1` và `db2`. Mỗi thể hiện này có thể duy trì trạng thái riêng của nó và hoạt động độc lập với nhau. Tuy nhiên, như đã đề cập ở trên, việc này có thể gây ra các vấn đề khi đối tượng cần duy trì một trạng thái toàn cục hoặc khi việc tạo nhiều thể hiện của đối tượng đó tốn nhiều tài nguyên. Mẫu thiết kế Singleton giúp giải quyết các vấn đề này bằng cách đảm bảo rằng chỉ có một thể hiện duy nhất của lớp được tạo, và cung cấp một điểm truy cập toàn cục đến thể hiện đó. Mẫu thiết kế này giúp giảm sự phức tạp và tăng hiệu suất của ứng dụng.
 
