@@ -186,8 +186,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Database {
-    private List<String> servers = new ArrayList<>();
-    private Random random = new Random();
 
     // Constructor là public, cho phép tạo thể hiện mới từ bên ngoài lớp
     public Database() {
