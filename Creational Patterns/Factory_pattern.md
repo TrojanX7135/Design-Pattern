@@ -14,156 +14,69 @@
 
 #### Ta hãy đến với ví dụ :
 
-    Một ví dụ về việc sử dụng Factory Pattern trong C#...  
+    Một ví dụ về việc sử dụng Factory Pattern trong Java...  
 
-```csharp
+```java
 
-public interface IAnimal
-{
-    string Speak();
+// Interface cho tất cả các loại sản phẩm
+public interface Product {
+    void use();
 }
 
-public class Dog : IAnimal
-{
-    public string Speak()
-    {
-        return "Gâu gâu";
+// Sản phẩm cụ thể 1
+public class ConcreteProduct1 implements Product {
+    public void use() {
+        System.out.println("Using ConcreteProduct1");
     }
 }
 
-public class Cat : IAnimal
-{
-    public string Speak()
-    {
-        return "Meo meo";
+// Sản phẩm cụ thể 2
+public class ConcreteProduct2 implements Product {
+    public void use() {
+        System.out.println("Using ConcreteProduct2");
     }
 }
 
-public abstract class AnimalFactory
-{
-    public abstract IAnimal GetAnimal(string animalType);
-}
-
-public class ConcreteAnimalFactory : AnimalFactory
-{
-    public override IAnimal GetAnimal(string animalType)
-    {
-        switch (animalType)
-        {
-            case "Dog":
-                return new Dog();
-            case "Cat":
-                return new Cat();
-            default:
-                throw new Exception("Invalid animal type");
+// Factory để tạo ra sản phẩm
+public class ProductFactory {
+    public Product createProduct(String type) {
+        if ("Product1".equals(type)) {
+            return new ConcreteProduct1();
+        } else if ("Product2".equals(type)) {
+            return new ConcreteProduct2();
         }
+        throw new IllegalArgumentException("Invalid product type");
     }
 }
 
-```
-
->     Trong ví dụ trên, chúng ta có một `AnimalFactory` để tạo ra các đối tượng `IAnimal` dựa trên tham số `animalType`. Điều này cho phép chúng ta tạo ra các đối tượng mà không cần biết lớp cụ thể của chúng.
-> 
->     `AnimalFactory` là một lớp trừu tượng có một phương thức trừu tượng `GetAnimal()` nhận vào một tham số `animalType` và trả về một đối tượng `IAnimal`. Lớp kế thừa từ `AnimalFactory` sẽ cần phải thực hiện phương thức này để tạo ra các đối tượng `IAnimal` cụ thể.
-
-
-
-    Nếu bạn muốn thêm vào đó một con gà ?
-    Bạn có thể tạo một lớp `Chicken` kế thừa từ `IAnimal` và thực hiện phương thức `Speak()`
-
-```csharp
-public class Chicken : IAnimal
-{
-    public string Speak()
-    {
-        return "Ò ó o";
+// Sử dụng Factory
+public class Client {
+    public static void main(String[] args) {
+        ProductFactory factory = new ProductFactory();
+        Product product1 = factory.createProduct("Product1");
+        product1.use();  // Output: "Using ConcreteProduct1"
+        Product product2 = factory.createProduct("Product2");
+        product2.use();  // Output: "Using ConcreteProduct2"
     }
 }
 
-```
-
-    Sau đó, bạn có thể thêm một trường hợp cho `Chicken` trong phương thức `GetAnimal()` của lớp `ConcreteAnimalFactory`:
-
-```csharp
-public class ConcreteAnimalFactory : AnimalFactory
-{
-    public override IAnimal GetAnimal(string animalType)
-    {
-        switch (animalType)
-        {
-            case "Dog":
-                return new Dog();
-            case "Cat":
-                return new Cat();
-            case "Chicken":
-                return new Chicken();
-            default:
-                throw new Exception("Invalid animal type");
-        }
-    }
-}
 
 ```
-
-    Với cách làm này, bạn có thể tạo ra một đối tượng `Chicken` bằng cách gọi phương thức `GetAnimal("Chicken")`.
-
 
 
 `?` **Trường hợp ta không dùng Factory thì sẽ như thế nào**
 
     Dưới đây là ví dụ nếu không dùng factory pattern...
 
-```csharp
-public interface IAnimal
-{
-    string Speak();
-}
-
-public class Dog : IAnimal
-{
-    public string Speak()
-    {
-        return "Gâu gâu";
-    }
-}
-
-public class Cat : IAnimal
-{
-    public string Speak()
-    {
-        return "Meo meo";
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        IAnimal animal;
-        string animalType = "Dog";
-
-        if (animalType == "Dog")
-        {
-            animal = new Dog();
-        }
-        else if (animalType == "Cat")
-        {
-            animal = new Cat();
-        }
-        else
-        {
-            throw new Exception("Invalid animal type");
-        }
-
-        Console.WriteLine(animal.Speak());
+```java
+public class Client {
+    public static void main(String[] args) {
+        Product product1 = new ConcreteProduct1();
+        product1.use();  // Output: "Using ConcreteProduct1"
+        Product product2 = new ConcreteProduct2();
+        product2.use();  // Output: "Using ConcreteProduct2"
     }
 }
 
 
 ```
-
-    Trong ví dụ trên, chúng ta tạo ra một đối tượng `IAnimal` bằng cách sử dụng từ khóa `new` và kiểm tra giá trị của biến `animalType` để xác định loại động vật cần tạo.
-
-   Việc tạo ra các đối tượng một cách trực tiếp như vậy làm cho code của bạn trở nên phụ thuộc vào các lớp cụ thể, khiến cho việc thay đổi và bảo trì code trở nên khó khăn hơn.
-
->     *Factory pattern giúp giải quyết các vấn đề này bằng cách tạo ra một lớp factory để quản lý việc tạo ra các đối tượng. Điều này cho phép bạn tạo ra các đối tượng mà không cần biết lớp cụ thể của chúng và giúp cho code của bạn dễ thay đổi và bảo trì hơn.*
