@@ -176,10 +176,9 @@ public class Database {
     public Database() {
     }
 
-    // Load balancer ngẫu nhiên đơn giản nhưng hiệu quả
-    public String getServer() {
-        int r = random.nextInt(servers.size());
-        return servers.get(r);
+    // Một phương thức đơn giản để minh họa việc sử dụng Database
+    public void query(String sql) {
+        System.out.println("Executing SQL query: " + sql);
     }
 }
 
