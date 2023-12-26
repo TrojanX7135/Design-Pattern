@@ -191,8 +191,6 @@ Called SpecificRequest()
 
 - **Real-world code in java**
 
-   Đoạn mã thực tế này mô tả việc sử dụng một cơ sở dữ liệu hóa chất cũ. Các đối tượng hợp chất hóa học truy cập cơ sở dữ liệu thông qua một giao diện Adapter.
-
 ```java
 // Đầu tiên, chúng ta có một interface mục tiêu (Target interface)
 public interface VietnameseSocket {
