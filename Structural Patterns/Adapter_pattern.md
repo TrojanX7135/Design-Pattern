@@ -66,46 +66,39 @@ Các lớp và đối tượng tham gia trong mẫu thiết kế này bao gồm:
 
 ```java
 
-using System;
-namespace Adapter.Structural
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Khởi tạo một đối tượng Adapter và gọi phương thức Request()
-            Target target = new Adapter();
-            target.Request();
-            Console.ReadKey();
-        }
-    }
-    // Class Target định nghĩa interface mà client sử dụng
-    public class Target
-    {
-        public virtual void Request()
-        {
-            Console.WriteLine("Called Target Request()"); // yêu cầu mà Target gọi
-        }
-    }
-    // Class Adapter kế thừa từ class Target và chứa một đối tượng Adaptee
-    public class Adapter : Target
-    {
-        private Adaptee adaptee = new Adaptee();
-        public override void Request()
-        {
-            // gọi phương thức SpecificRequest()
-            adaptee.SpecificRequest();
-        }
-    }
-    // Class Adaptee chứa một phương thức SpecificRequest()
-    public class Adaptee
-    {
-        public void SpecificRequest()
-        {
-            Console.WriteLine("Called SpecificRequest()"); // yêu cầu cụ thể nằm bên adaptee
-        }
+public class Main {
+    public static void main(String[] args) {
+        // Khởi tạo một đối tượng Adapter và gọi phương thức request()
+        Target target = new Adapter();
+        target.request();
     }
 }
+
+// Class Target định nghĩa interface mà client sử dụng
+class Target {
+    public void request() {
+        System.out.println("Called Target request()"); // yêu cầu mà Target gọi
+    }
+}
+
+// Class Adapter kế thừa từ class Target và chứa một đối tượng Adaptee
+class Adapter extends Target {
+    private Adaptee adaptee = new Adaptee();
+
+    @Override
+    public void request() {
+        // gọi phương thức specificRequest()
+        adaptee.specificRequest();
+    }
+}
+
+// Class Adaptee chứa một phương thức specificRequest()
+class Adaptee {
+    public void specificRequest() {
+        System.out.println("Called SpecificRequest()"); // yêu cầu cụ thể nằm bên adaptee
+    }
+}
+
 
 ```
 
