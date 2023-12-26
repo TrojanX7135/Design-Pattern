@@ -66,101 +66,43 @@ Các lớp và đối tượng tham gia trong mẫu thiết kế này bao gồm:
 
 ```java
 
-public class Main {
-    public static void main(String[] args) {
-        // Hợp chất không được điều chỉnh
-        Compound unknown = new Compound();
-        unknown.display();
-
-        // Hợp chất được điều chỉnh
-        RichCompound water = new RichCompound("Water");
-        water.display();
-
-        RichCompound benzene = new RichCompound("Benzene");
-        benzene.display();
-
-        RichCompound ethanol = new RichCompound("Ethanol");
-        ethanol.display();
-    }
-}
-
-// Lớp 'Target'
-class Compound {
-    protected float boilingPoint;
-    protected float meltingPoint;
-    protected double molecularWeight;
-    protected String molecularFormula;
-
-    public void display() {
-        System.out.println("\nHợp chất: Không xác định ------ ");
-    }
-}
-
-// Lớp 'Adapter'
-class RichCompound extends Compound {
-    private String chemical;
-    private ChemicalDatabank bank;
-
-    // Constructor
-    public RichCompound(String chemical) {
-        this.chemical = chemical;
-    }
-
-    @Override
-    public void display() {
-        // Adaptee
-        bank = new ChemicalDatabank();
-        boilingPoint = bank.getCriticalPoint(chemical, "B");
-        meltingPoint = bank.getCriticalPoint(chemical, "M");
-        molecularWeight = bank.getMolecularWeight(chemical);
-        molecularFormula = bank.getMolecularStructure(chemical);
-
-        System.out.println("\nHợp chất: " + chemical + " ------ ");
-        System.out.println(" Công thức: " + molecularFormula);
-        System.out.println(" Khối lượng: " + molecularWeight);
-        System.out.println(" Điểm nóng chảy: " + meltingPoint);
-        System.out.println(" Điểm sôi: " + boilingPoint);
-    }
-}
-
-// Lớp 'Adaptee'
-class ChemicalDatabank {
-    public float getCriticalPoint(String compound, String point) {
-        // Điểm nóng chảy
-        if (point.equals("M")) {
-            switch (compound.toLowerCase()) {
-                case "water": return 0.0f;
-                case "benzene": return 5.5f;
-                case "ethanol": return -114.1f;
-                default: return 0f;
-            }
-        }
-        // Điểm sôi
-        else {
-            switch (compound.toLowerCase()) {
-                case "water": return 100.0f;
-                case "benzene": return 80.1f;
-                case "ethanol": return 78.3f;
-                default: return 0f;
-            }
+using System;
+namespace Adapter.Structural
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            // Khởi tạo một đối tượng Adapter và gọi phương thức Request()
+            Target target = new Adapter();
+            target.Request();
+            Console.ReadKey();
         }
     }
-
-    public String getMolecularStructure(String compound) {
-        switch (compound.toLowerCase()) {
-            case "water": return "H20";
-            case "benzene": return "C6H6";
-            case "ethanol": return "C2H5OH";
-            default: return "";
+    // Class Target định nghĩa interface mà client sử dụng
+    public class Target
+    {
+        public virtual void Request()
+        {
+            Console.WriteLine("Called Target Request()"); // yêu cầu mà Target gọi
         }
     }
-
-    public double getMolecularWeight(String compound) {
-        switch (compound.toLowerCase()) {
-            case "water": return 18.015;
-            case "benzene": return 78.1134;
-            case "ethanol": return 46.0688;
-            default: return 0d;
+    // Class Adapter kế thừa từ class Target và chứa một đối tượng Adaptee
+    public class Adapter : Target
+    {
+        private Adaptee adaptee = new Adaptee();
+        public override void Request()
+        {
+            // gọi phương thức SpecificRequest()
+            adaptee.SpecificRequest();
+        }
+    }
+    // Class Adaptee chứa một phương thức SpecificRequest()
+    public class Adaptee
+    {
+        public void SpecificRequest()
+        {
+            Console.WriteLine("Called SpecificRequest()"); // yêu cầu cụ thể nằm bên adaptee
         }
     }
 }
