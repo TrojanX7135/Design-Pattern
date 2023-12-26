@@ -60,89 +60,12 @@ Các lớp và đối tượng tham gia trong mẫu thiết kế này bao gồm:
 
 #### # Ta hãy đến với ví dụ :
 
-- **Structural code in C#**
+- **Structural code in java**
 
     Đoạn mã này mô tả mẫu thiết kế Adapter, giúp ánh xạ giao diện của một lớp vào một lớp khác để chúng có thể hoạt động cùng nhau. Các lớp không tương thích này có thể đến từ các thư viện hoặc khung công việc khác nhau.
 
-```csharp
-
-using System;
-
-namespace Adapter.Structural
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Khởi tạo một đối tượng Adapter và gọi phương thức Request()
-            Target target = new Adapter();
-            target.Request();
-
-            Console.ReadKey();
-        }
-    }
-
-    // Class Target định nghĩa interface mà client sử dụng
-    public class Target
-    {
-        public virtual void Request()
-        {
-            Console.WriteLine("Called Target Request()"); // yêu cầu mà Target gọi
-        }
-    }
-
-    // Class Adapter kế thừa từ class Target và chứa một đối tượng Adaptee
-    public class Adapter : Target
-    {
-        private Adaptee adaptee = new Adaptee();
-
-        public override void Request()
-        {
-            // gọi phương thức SpecificRequest()
-            adaptee.SpecificRequest();
-        }
-    }
-
-    // Class Adaptee chứa một phương thức SpecificRequest()
-    public class Adaptee
-    {
-        public void SpecificRequest()
-        {
-            Console.WriteLine("Called SpecificRequest()"); // yêu cầu cụ thể nằm bên adaptee
-        }
-    }
-}
-
-
-```
-
-**Output**
-
-```powershell
-Called SpecificRequest()
-```
-
->     Trong đó:
-> 
-> * `Program` là class chứa hàm `Main` để chạy chương trình.
-> 
-> * `Target` là class định nghĩa interface mà client sử dụng. Nó có một phương thức ảo `Request()` để hiển thị thông báo “Called Target Request()”.
-> 
-> * `Adapter` là class kế thừa từ `Target` và chứa một đối tượng `Adaptee`. Nó ghi đè phương thức `Request()` để gọi phương thức `SpecificRequest()` của đối tượng `Adaptee`.
-> 
-> * `Adaptee` là class chứa một phương thức `SpecificRequest()` để hiển thị thông báo “Called SpecificRequest()”.
-> 
-> Khi chạy chương trình, hàm `Main` sẽ khởi tạo một đối tượng `Adapter` và gọi phương thức `Request()` của nó. Phương thức này sẽ gọi phương thức `SpecificRequest()` của đối tượng `Adaptee`, và kết quả là hiển thị thông báo `Called SpecificRequest()`.
-> 
-> `client` được xem là hàm `Main` trong class `Program`. Hàm `Main` sử dụng interface của class `Target` thông qua đối tượng `Adapter` mà nó khởi tạo và gọi phương thức `Request()` của đối tượng đó.
-
-
-
-- **Real-world code in java**
-
-   Đoạn mã thực tế này mô tả việc sử dụng một cơ sở dữ liệu hóa chất cũ. Các đối tượng hợp chất hóa học truy cập cơ sở dữ liệu thông qua một giao diện Adapter.
-
 ```java
+
 public class Main {
     public static void main(String[] args) {
         // Hợp chất không được điều chỉnh
@@ -242,43 +165,63 @@ class ChemicalDatabank {
     }
 }
 
-
 ```
 
 **Output**
 
 ```powershell
-Hợp chất: Không xác định ------
-
-Hợp chất: Water ------
-Công thức: H20
-Khối lượng: 18.015
-Điểm nóng chảy: 0
-Điểm sôi: 100
-
-Hợp chất: Benzene ------
-Công thức: C6H6
-Khối lượng: 78.1134
-Điểm nóng chảy: 5.5
-Điểm sôi: 80.1
-
-Hợp chất: Ethanol ------
-Công thức: C2H5OH
-Khối lượng: 46.0688
-Điểm nóng chảy: -114.1
-Điểm sôi: 78.3
+Called SpecificRequest()
 ```
 
 >     Trong đó:
 > 
-> - Lớp `Compound` là lớp mục tiêu (Target) trong mẫu thiết kế. Nó định nghĩa phương thức `Display()` để hiển thị thông tin về hợp chất. Đây là giao diện mà lớp `RichCompound` sẽ sử dụng để tương tác với hệ thống.
+> * `Program` là class chứa hàm `Main` để chạy chương trình.
 > 
-> - Lớp `RichCompound` là lớp Adapter. Nó kế thừa từ lớp `Compound` và cung cấp một giao diện tương thích với hệ thống hiện tại. Lớp này chứa một đối tượng của lớp `ChemicalDatabank` và gọi các phương thức của nó để lấy thông tin về hợp chất.
+> * `Target` là class định nghĩa interface mà client sử dụng. Nó có một phương thức ảo `Request()` để hiển thị thông báo “Called Target Request()”.
 > 
-> - Lớp `ChemicalDatabank` là lớp Adaptee, đại diện cho hệ thống hiện tại. Nó cung cấp các phương thức để truy xuất thông tin về các hợp chất từ một nguồn dữ liệu.
+> * `Adapter` là class kế thừa từ `Target` và chứa một đối tượng `Adaptee`. Nó ghi đè phương thức `Request()` để gọi phương thức `SpecificRequest()` của đối tượng `Adaptee`.
 > 
-> - Trong phương thức `Display()` của lớp `RichCompound`, lớp này sử dụng đối tượng `ChemicalDatabank` để lấy thông tin về hợp chất (như boiling point, melting point, molecular weight, molecular formula) thông qua các phương thức của nó.
+> * `Adaptee` là class chứa một phương thức `SpecificRequest()` để hiển thị thông báo “Called SpecificRequest()”.
 > 
-> Với cách triển khai này, lớp `RichCompound` cung cấp một giao diện tương thích với lớp `Compound` (lớp mục tiêu), nhưng nó sử dụng lớp `ChemicalDatabank` (lớp Adaptee) để lấy thông tin về hợp chất từ hệ thống hiện tại. Điều này cho phép lớp `Compound` tương tác với hệ thống thông qua lớp `RichCompound` như là một Adapter.
+> Khi chạy chương trình, hàm `Main` sẽ khởi tạo một đối tượng `Adapter` và gọi phương thức `Request()` của nó. Phương thức này sẽ gọi phương thức `SpecificRequest()` của đối tượng `Adaptee`, và kết quả là hiển thị thông báo `Called SpecificRequest()`.
+> 
+> `client` được xem là hàm `Main` trong class `Program`. Hàm `Main` sử dụng interface của class `Target` thông qua đối tượng `Adapter` mà nó khởi tạo và gọi phương thức `Request()` của đối tượng đó.
+
+
+
+- **Real-world code in java**
+
+   Đoạn mã thực tế này mô tả việc sử dụng một cơ sở dữ liệu hóa chất cũ. Các đối tượng hợp chất hóa học truy cập cơ sở dữ liệu thông qua một giao diện Adapter.
+
+```java
+// Đầu tiên, chúng ta có một interface mục tiêu (Target interface)
+public interface VietnameseSocket {
+    public void provideElectricity();
+}
+
+// Tiếp theo, chúng ta có một lớp cần thích ứng (Adaptee class)
+public class AmericanSocket {
+    public void provideElectricity() {
+        System.out.println("Providing electricity with American standard");
+    }
+}
+
+// Cuối cùng, chúng ta tạo ra một Adapter để kết nối hai interface không tương thích
+public class Adapter implements VietnameseSocket {
+    private AmericanSocket americanSocket;
+
+    public Adapter(AmericanSocket americanSocket) {
+        this.americanSocket = americanSocket;
+    }
+
+    @Override
+    public void provideElectricity() {
+        americanSocket.provideElectricity();
+    }
+}
+
+
+```
+
 
 
