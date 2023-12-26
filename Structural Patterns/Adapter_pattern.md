@@ -138,134 +138,109 @@ Called SpecificRequest()
 
 
 
-- **Real-world code in C#**
+- **Real-world code in java**
 
    Đoạn mã thực tế này mô tả việc sử dụng một cơ sở dữ liệu hóa chất cũ. Các đối tượng hợp chất hóa học truy cập cơ sở dữ liệu thông qua một giao diện Adapter.
 
-```csharp
-using System;
+```java
+public class Main {
+    public static void main(String[] args) {
+        // Hợp chất không được điều chỉnh
+        Compound unknown = new Compound();
+        unknown.display();
 
-namespace Adapter.RealWorld
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Hợp chất không được điều chỉnh
-            Compound unknown = new Compound();
-            unknown.Display();
+        // Hợp chất được điều chỉnh
+        RichCompound water = new RichCompound("Water");
+        water.display();
 
-            // Hợp chất được điều chỉnh
-            Compound water = new RichCompound("Water");
-            water.Display();
+        RichCompound benzene = new RichCompound("Benzene");
+        benzene.display();
 
-            Compound benzene = new RichCompound("Benzene");
-            benzene.Display();
-
-            Compound ethanol = new RichCompound("Ethanol");
-            ethanol.Display();
-
-            // Chờ người dùng
-            Console.ReadKey();
-        }
-    }
-
-    /// Lớp 'Target'
-    public class Compound
-    {
-        protected float boilingPoint;
-        protected float meltingPoint;
-        protected double molecularWeight;
-        protected string molecularFormula;
-
-        public virtual void Display()
-        {
-            Console.WriteLine("\nHợp chất: Không xác định ------ ");
-        }
-    }
-
-    /// Lớp 'Adapter'
-    public class RichCompound : Compound
-    {
-        private string chemical;
-        private ChemicalDatabank bank;
-
-        // Constructor
-        public RichCompound(string chemical)
-        {
-            this.chemical = chemical;
-        }
-
-        public override void Display()
-        {
-            // Adaptee
-            bank = new ChemicalDatabank();
-            boilingPoint = bank.GetCriticalPoint(chemical, "B");
-            meltingPoint = bank.GetCriticalPoint(chemical, "M");
-            molecularWeight = bank.GetMolecularWeight(chemical);
-            molecularFormula = bank.GetMolecularStructure(chemical);
-
-            Console.WriteLine("\nHợp chất: {0} ------ ", chemical);
-            Console.WriteLine(" Công thức: {0}", molecularFormula);
-            Console.WriteLine(" Khối lượng: {0}", molecularWeight);
-            Console.WriteLine(" Điểm nóng chảy: {0}", meltingPoint);
-            Console.WriteLine(" Điểm sôi: {0}", boilingPoint);
-        }
-    }
-
-    /// Lớp 'Adaptee'
-    public class ChemicalDatabank
-    {
-        public float GetCriticalPoint(string compound, string point)
-        {
-            // Điểm nóng chảy
-            if (point == "M")
-            {
-                switch (compound.ToLower())
-                {
-                    case "water": return 0.0f;
-                    case "benzene": return 5.5f;
-                    case "ethanol": return -114.1f;
-                    default: return 0f;
-                }
-            }
-            // Điểm sôi
-            else
-            {
-                switch (compound.ToLower())
-                {
-                    case "water": return 100.0f;
-                    case "benzene": return 80.1f;
-                    case "ethanol": return 78.3f;
-                    default: return 0f;
-                }
-            }
-        }
-
-        public string GetMolecularStructure(string compound)
-        {
-            switch (compound.ToLower())
-            {
-                case "water": return "H20";
-                case "benzene": return "C6H6";
-                case "ethanol": return "C2H5OH";
-                default: return "";
-            }
-        }
-
-        public double GetMolecularWeight(string compound)
-        {
-            switch (compound.ToLower())
-            {
-                case "water": return 18.015;
-                case "benzene": return 78.1134;
-                case "ethanol": return 46.0688;
-                default: return 0d;
-            }
-        }
+        RichCompound ethanol = new RichCompound("Ethanol");
+        ethanol.display();
     }
 }
 
+// Lớp 'Target'
+class Compound {
+    protected float boilingPoint;
+    protected float meltingPoint;
+    protected double molecularWeight;
+    protected String molecularFormula;
+
+    public void display() {
+        System.out.println("\nHợp chất: Không xác định ------ ");
+    }
+}
+
+// Lớp 'Adapter'
+class RichCompound extends Compound {
+    private String chemical;
+    private ChemicalDatabank bank;
+
+    // Constructor
+    public RichCompound(String chemical) {
+        this.chemical = chemical;
+    }
+
+    @Override
+    public void display() {
+        // Adaptee
+        bank = new ChemicalDatabank();
+        boilingPoint = bank.getCriticalPoint(chemical, "B");
+        meltingPoint = bank.getCriticalPoint(chemical, "M");
+        molecularWeight = bank.getMolecularWeight(chemical);
+        molecularFormula = bank.getMolecularStructure(chemical);
+
+        System.out.println("\nHợp chất: " + chemical + " ------ ");
+        System.out.println(" Công thức: " + molecularFormula);
+        System.out.println(" Khối lượng: " + molecularWeight);
+        System.out.println(" Điểm nóng chảy: " + meltingPoint);
+        System.out.println(" Điểm sôi: " + boilingPoint);
+    }
+}
+
+// Lớp 'Adaptee'
+class ChemicalDatabank {
+    public float getCriticalPoint(String compound, String point) {
+        // Điểm nóng chảy
+        if (point.equals("M")) {
+            switch (compound.toLowerCase()) {
+                case "water": return 0.0f;
+                case "benzene": return 5.5f;
+                case "ethanol": return -114.1f;
+                default: return 0f;
+            }
+        }
+        // Điểm sôi
+        else {
+            switch (compound.toLowerCase()) {
+                case "water": return 100.0f;
+                case "benzene": return 80.1f;
+                case "ethanol": return 78.3f;
+                default: return 0f;
+            }
+        }
+    }
+
+    public String getMolecularStructure(String compound) {
+        switch (compound.toLowerCase()) {
+            case "water": return "H20";
+            case "benzene": return "C6H6";
+            case "ethanol": return "C2H5OH";
+            default: return "";
+        }
+    }
+
+    public double getMolecularWeight(String compound) {
+        switch (compound.toLowerCase()) {
+            case "water": return 18.015;
+            case "benzene": return 78.1134;
+            case "ethanol": return 46.0688;
+            default: return 0d;
+        }
+    }
+}
 
 
 ```
