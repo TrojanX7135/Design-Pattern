@@ -124,37 +124,4 @@ Called SpecificRequest()
 
 
 
-- **Real-world code in java**
-
-```java
-// Đầu tiên, chúng ta có một interface mục tiêu (Target interface)
-public interface VietnameseSocket {
-    public void provideElectricity();
-}
-
-// Tiếp theo, chúng ta có một lớp cần thích ứng (Adaptee class)
-public class AmericanSocket {
-    public void provideElectricity() {
-        System.out.println("Providing electricity with American standard");
-    }
-}
-
-// Cuối cùng, chúng ta tạo ra một Adapter để kết nối hai interface không tương thích
-public class Adapter implements VietnameseSocket {
-    private AmericanSocket americanSocket;
-
-    public Adapter(AmericanSocket americanSocket) {
-        this.americanSocket = americanSocket;
-    }
-
-    @Override
-    public void provideElectricity() {
-        americanSocket.provideElectricity();
-    }
-}
-
-
-```
-
-
 
