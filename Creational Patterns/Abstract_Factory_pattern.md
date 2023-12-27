@@ -22,143 +22,113 @@
 
     đây là ví dụ về một cửa hàng nội thất có 2 concept nội thất là Spheric và Pyramidal :
 
-```csharp
+```java
 
-public interface IChair
-{
-    void SitOn();
+public interface IChair {
+    void sitOn();
 }
 
-public interface ISofa
-{
-    void SitOn();
+public interface ISofa {
+    void sitOn();
 }
 
-public interface ICoffeeTable
-{
-    void PutOn();
+public interface ICoffeeTable {
+    void putOn();
 }
 
-
-//FACTORY
-public interface IFurnitureFactory
-{
-    IChair CreateChair();
-    ISofa CreateSofa();
-    ICoffeeTable CreateCoffeeTable();
+public interface IFurnitureFactory {
+    IChair createChair();
+    ISofa createSofa();
+    ICoffeeTable createCoffeeTable();
 }
 
-//------------------------------------------------------
-public class SphericFurnitureFactory : IFurnitureFactory
-{
-    public IChair CreateChair()
-    {
+public class SphericFurnitureFactory implements IFurnitureFactory {
+    public IChair createChair() {
         return new SphericChair();
     }
 
-    public ISofa CreateSofa()
-    {
+    public ISofa createSofa() {
         return new SphericSofa();
     }
 
-    public ICoffeeTable CreateCoffeeTable()
-    {
+    public ICoffeeTable createCoffeeTable() {
         return new SphericCoffeeTable();
     }
 }
 
-public class PyramidalFurnitureFactory : IFurnitureFactory
-{
-    public IChair CreateChair()
-    {
+public class PyramidalFurnitureFactory implements IFurnitureFactory {
+    public IChair createChair() {
         return new PyramidalChair();
     }
 
-    public ISofa CreateSofa()
-    {
+    public ISofa createSofa() {
         return new PyramidalSofa();
     }
 
-    public ICoffeeTable CreateCoffeeTable()
-    {
+    public ICoffeeTable createCoffeeTable() {
         return new PyramidalCoffeeTable();
     }
 }
 
-public class SphericChair : IChair
-{
-    public void SitOn()
-    {
-        Console.WriteLine("Sit on a Spheric chair");
+public class SphericChair implements IChair {
+    public void sitOn() {
+        System.out.println("Sit on a Spheric chair");
     }
 }
 
-public class PyramidalChair : IChair
-{
-    public void SitOn()
-    {
-        Console.WriteLine("Sit on a Pyramidal chair");
+public class PyramidalChair implements IChair {
+    public void sitOn() {
+        System.out.println("Sit on a Pyramidal chair");
     }
 }
 
-public class SphericSofa : ISofa
-{
-    public void SitOn()
-    {
-        Console.WriteLine("Sit on a Spheric sofa");
+public class SphericSofa implements ISofa {
+    public void sitOn() {
+        System.out.println("Sit on a Spheric sofa");
     }
 }
 
-public class PyramidalSofa : ISofa
-{
-    public void SitOn()
-    {
-        Console.WriteLine("Sit on a Pyramidal sofa");
+public class PyramidalSofa implements ISofa {
+    public void sitOn() {
+        System.out.println("Sit on a Pyramidal sofa");
     }
 }
 
-public class SphericCoffeeTable : ICoffeeTable
-{
-    public void PutOn()
-    {
-        Console.WriteLine("Put something on a Spheric coffee table");
+public class SphericCoffeeTable implements ICoffeeTable {
+    public void putOn() {
+        System.out.println("Put something on a Spheric coffee table");
     }
 }
 
-public class PyramidalCoffeeTable : ICoffeeTable
-{
-    public void PutOn()
-    {
-        Console.WriteLine("Put something on a Pyramidal coffee table");
+public class PyramidalCoffeeTable implements ICoffeeTable {
+    public void putOn() {
+        System.out.println("Put something on a Pyramidal coffee table");
     }
 }
-//------------------------------------------------------
 
-class Program
-{
-    static void Main(string[] args)
-    {
+public class Main {
+    public static void main(String[] args) {
         IFurnitureFactory factory = new SphericFurnitureFactory();
 
-        var chair = factory.CreateChair();
-        chair.SitOn();
+        IChair chair = factory.createChair();
+        chair.sitOn();
 
-        var sofa = factory.CreateSofa();
-        sofa.SitOn();
+        ISofa sofa = factory.createSofa();
+        sofa.sitOn();
 
-        var coffeeTable = factory.CreateCoffeeTable();
-        coffeeTable.PutOn();
+        ICoffeeTable coffeeTable = factory.createCoffeeTable();
+        coffeeTable.putOn();
 
         factory = new PyramidalFurnitureFactory();
 
-        chair = factory.CreateChair();
-        chair.SitOn();
+        chair = factory.createChair();
+        chair.sitOn();
 
-        sofa = factory.CreateSofa();
-        sofa.SitOn();
+        sofa = factory.createSofa();
+        sofa.sitOn();
 
-        coffeeTable = factory.CreateCoffeeTable();
-        coffeeTable.PutOn();
+        coffeeTable = factory.createCoffeeTable();
+        coffeeTable.putOn();
     }
 }
 
