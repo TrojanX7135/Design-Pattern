@@ -73,7 +73,6 @@ public class Light {
 }
 
 // 'Facade'
-// FACADE
 public class Car {
     private Power power;
     private Light light;
