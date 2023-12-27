@@ -45,383 +45,63 @@ Các lớp và đối tượng tham gia trong mẫu thiết kế này bao gồm:
 
 #### # Ta hãy đến với ví dụ :
 
-- **Structural code in C#**
+- **Structural code in java**
 
-    Đoạn Code cấu trúc này mô tả mẫu thiết kế Iterator, cung cấp cách để duyệt (lặp) qua một tập hợp các phần tử mà không cần biết chi tiết về cấu trúc nội bộ của tập hợp đó.
+    Đoạn Code cnày mô tả mẫu thiết kế Iterator, cung cấp cách để duyệt (lặp) qua một tập hợp các phần tử mà không cần biết chi tiết về cấu trúc nội bộ của tập hợp đó.
 
-```csharp
+```java
 
-using System;
-using System.Collections.Generic;
+// Interface 'Iterator'
+public interface Iterator {
+    boolean hasNext(); // Kiểm tra xem còn phần tử tiếp theo không
+    Object next(); // Lấy phần tử tiếp theo
+}
 
-namespace Iterator.Structural
-{
-    /// <summary>
-    /// Iterator Design Pattern
-    /// </summary>
+// Interface 'Container'
+public interface Container {
+    Iterator getIterator(); // Lấy ra một Iterator
+}
 
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            ConcreteAggregate a = new ConcreteAggregate();
-            a[0] = "Item A";
-            a[1] = "Item B";
-            a[2] = "Item C";
-            a[3] = "Item D";
+// Lớp cụ thể triển khai interface 'Container'
+public class NameRepository implements Container {
+    public String names[] = {"Robert", "John", "Julie", "Lora"};
 
-            // Create Iterator and provide aggregate
+    @Override
+    public Iterator getIterator() {
+        return new NameIterator();
+    }
 
-            Iterator i = a.CreateIterator();
+    private class NameIterator implements Iterator {
+        int index;
 
-            Console.WriteLine("Iterating over collection:");
-
-            object item = i.First();
-
-            while (item != null)
-            {
-                Console.WriteLine(item);
-                item = i.Next();
+        @Override
+        public boolean hasNext() {
+            if(index < names.length){
+                return true;
             }
-
-            // Wait for user
-
-            Console.ReadKey();
-        }
-    }
-
-    /// <summary>
-    /// The 'Aggregate' abstract class
-    /// </summary>
-
-    public abstract class Aggregate
-    {
-        public abstract Iterator CreateIterator();
-    }
-
-    /// <summary>
-    /// The 'ConcreteAggregate' class
-    /// </summary>
-
-    public class ConcreteAggregate : Aggregate
-    {
-        List<object> items = new List<object>();
-
-        public override Iterator CreateIterator()
-        {
-            return new ConcreteIterator(this);
+            return false;
         }
 
-        // Get item count
-
-        public int Count
-        {
-            get { return items.Count; }
-        }
-
-        // Indexer
-
-        public object this[int index]
-        {
-            get { return items[index]; }
-            set { items.Insert(index, value); }
-        }
-    }
-
-    /// <summary>
-    /// The 'Iterator' abstract class
-    /// </summary>
-
-    public abstract class Iterator
-    {
-        public abstract object First();
-        public abstract object Next();
-        public abstract bool IsDone();
-        public abstract object CurrentItem();
-    }
-
-    /// <summary>
-    /// The 'ConcreteIterator' class
-    /// </summary>
-
-    public class ConcreteIterator : Iterator
-    {
-        ConcreteAggregate aggregate;
-        int current = 0;
-
-        // Constructor
-
-        public ConcreteIterator(ConcreteAggregate aggregate)
-        {
-            this.aggregate = aggregate;
-        }
-
-        // Gets first iteration item
-
-        public override object First()
-        {
-            return aggregate[0];
-        }
-
-        // Gets next iteration item
-
-        public override object Next()
-        {
-            object ret = null;
-            if (current < aggregate.Count - 1)
-            {
-                ret = aggregate[++current];
+        @Override
+        public Object next() {
+            if(this.hasNext()){
+                return names[index++];
             }
-
-            return ret;
-        }
-
-        // Gets current iteration item
-
-        public override object CurrentItem()
-        {
-            return aggregate[current];
-        }
-
-        // Gets whether iterations are complete
-
-        public override bool IsDone()
-        {
-            return current >= aggregate.Count;
-        }
+            return null;
+        }		
     }
 }
 
+// Chương trình chính để kiểm tra
+public class Main {
+    public static void main(String[] args) {
+        NameRepository namesRepository = new NameRepository();
 
-```
-
-**Output**
-
-```powershell
-Iterating over collection:
-Item A
-Item B
-Item C
-Item D
-```
-
->   Trong đó, `ConcreteAggregate` là một lớp cụ thể của `Aggregate` và chứa một danh sách các đối tượng. Lớp `ConcreteIterator` là một lớp cụ thể của `Iterator` và được sử dụng để duyệt qua các phần tử của `ConcreteAggregate`.
-> 
->     Trong hàm `Main`, một đối tượng `ConcreteAggregate` được khởi tạo và các phần tử được thêm vào. Sau đó, một đối tượng `Iterator` được tạo ra bằng cách gọi phương thức `CreateIterator()` của đối tượng `ConcreteAggregate`. Cuối cùng, chương trình sử dụng đối tượng `Iterator` để duyệt qua các phần tử của `ConcreteAggregate` và in chúng ra màn hình.
-> 
-> Các phương thức của lớp `ConcreteIterator` bao gồm:
-> 
-> * `First()`: Trả về phần tử đầu tiên của danh sách.
-> * `Next()`: Trả về phần tử tiếp theo trong danh sách.
-> * `CurrentItem()`: Trả về phần tử hiện tại trong danh sách.
-> * `IsDone()`: Kiểm tra xem đã duyệt hết danh sách chưa.
-
-
-
-- **Real-world code in C#**
-
-   Đoạn Code thực tế này mô tả mẫu thiết kế Iterator được sử dụng để duyệt qua một tập hợp các phần tử và bỏ qua một số phần tử cụ thể trong mỗi vòng lặp.
-
-```csharp
-using System;
-using System.Collections.Generic;
-
-namespace Iterator.RealWorld
-{
-    /// <summary>
-    /// Iterator Design Pattern
-    /// </summary>
-
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            // Build a collection
-
-            Collection collection = new Collection();
-            collection[0] = new Item("Item 0");
-            collection[1] = new Item("Item 1");
-            collection[2] = new Item("Item 2");
-            collection[3] = new Item("Item 3");
-            collection[4] = new Item("Item 4");
-            collection[5] = new Item("Item 5");
-            collection[6] = new Item("Item 6");
-            collection[7] = new Item("Item 7");
-            collection[8] = new Item("Item 8");
-
-            // Create iterator
-
-            Iterator iterator = collection.CreateIterator();
-
-            // Skip every other item
-
-            iterator.Step = 2;
-
-            Console.WriteLine("Iterating over collection:");
-
-            for (Item item = iterator.First();
-                !iterator.IsDone; item = iterator.Next())
-            {
-                Console.WriteLine(item.Name);
-            }
-
-            // Wait for user
-
-            Console.ReadKey();
-        }
-    }
-    /// <summary>
-    /// A collection item
-    /// </summary>
-
-    public class Item
-    {
-        string name;
-
-        // Constructor
-
-        public Item(string name)
-        {
-            this.name = name;
-        }
-
-        public string Name
-        {
-            get { return name; }
-        }
-    }
-
-    /// <summary>
-    /// The 'Aggregate' interface
-    /// </summary>
-
-    public interface IAbstractCollection
-    {
-        Iterator CreateIterator();
-    }
-
-    /// <summary>
-    /// The 'ConcreteAggregate' class
-    /// </summary>
-
-    public class Collection : IAbstractCollection
-    {
-        List<Item> items = new List<Item>();
-
-        public Iterator CreateIterator()
-        {
-            return new Iterator(this);
-        }
-
-        // Gets item count
-
-        public int Count
-        {
-            get { return items.Count; }
-        }
-
-        // Indexer
-
-        public Item this[int index]
-        {
-            get { return items[index]; }
-            set { items.Add(value); }
-        }
-    }
-
-    /// <summary>
-    /// The 'Iterator' interface
-    /// </summary>
-
-    public interface IAbstractIterator
-    {
-        Item First();
-        Item Next();
-        bool IsDone { get; }
-        Item CurrentItem { get; }
-    }
-
-    /// <summary>
-    /// The 'ConcreteIterator' class
-    /// </summary>
-
-    public class Iterator : IAbstractIterator
-    {
-        Collection collection;
-        int current = 0;
-        int step = 1;
-
-        // Constructor
-
-        public Iterator(Collection collection)
-        {
-            this.collection = collection;
-        }
-
-        // Gets first item
-
-        public Item First()
-        {
-            current = 0;
-            return collection[current] as Item;
-        }
-
-        // Gets next item
-
-        public Item Next()
-        {
-            current += step;
-            if (!IsDone)
-                return collection[current] as Item;
-            else
-                return null;
-        }
-
-        // Gets or sets stepsize
-
-        public int Step
-        {
-            get { return step; }
-            set { step = value; }
-        }
-
-        // Gets current iterator item
-
-        public Item CurrentItem
-        {
-            get { return collection[current] as Item; }
-        }
-
-        // Gets whether iteration is complete
-
-        public bool IsDone
-        {
-            get { return current >= collection.Count; }
-        }
+        for(Iterator iter = namesRepository.getIterator(); iter.hasNext();){
+            String name = (String)iter.next();
+            System.out.println("Name : " + name);
+        } 	
     }
 }
 
-
 ```
-
-**Output**
-
-```powershell
-Iterating over collection:
-Item 0
-Item 2
-Item 4
-Item 6
-Item 8
-```
-
->     Trong đó, `Collection` là một lớp cụ thể của `IAbstractCollection` và chứa một danh sách các đối tượng `Item`. Lớp `Iterator` là một lớp cụ thể của `IAbstractIterator` và được sử dụng để duyệt qua các phần tử của `Collection`.
-> 
->     Trong hàm `Main`, một đối tượng `Collection` được khởi tạo và các phần tử được thêm vào. Sau đó, một đối tượng `Iterator` được tạo ra bằng cách gọi phương thức `CreateIterator()` của đối tượng `Collection`. Cuối cùng, chương trình sử dụng đối tượng `Iterator` để duyệt qua các phần tử của `Collection` và in chúng ra màn hình.
-> 
-> Các phương thức của lớp `Iterator` bao gồm:
-> 
-> * `First()`: Trả về phần tử đầu tiên của danh sách.
-> * `Next()`: Trả về phần tử tiếp theo trong danh sách.
-> * `CurrentItem()`: Trả về phần tử hiện tại trong danh sách.
-> * `IsDone()`: Kiểm tra xem đã duyệt hết danh sách chưa.
