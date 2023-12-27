@@ -52,42 +52,62 @@ Các lớp và đối tượng tham gia trong mẫu thiết kế này bao gồm:
 
 ```java
 // 'Subsystem' classes
-public class Engine {
-    public void start() {
-        System.out.println("Engine started");
-    }
+public class Power {
+	public void turnOnPower() {
+		System.out.print("Power is On \n");
+	}
+	
+	public void turnOffPower() {
+		System.out.print("Power is Off \n");
+	}
 }
 
-public class AirConditioner {
-    public void start() {
-        System.out.println("AirConditioner started");
-    }
+public class Light {
+	public void turnOnLight() {
+		System.out.print("Light is On \n");
+	}
+	
+	public void turnOffLight() {
+		System.out.print("Light is Off \n");
+	}
 }
 
 // 'Facade'
+// FACADE
 public class Car {
-    private Engine engine;
-    private AirConditioner airConditioner;
+    private Power power;
+    private Light light;
 
     public Car() {
-        this.engine = new Engine();
-        this.airConditioner = new AirConditioner();
+        this.power = new Power();
+        this.light = new Light();
     }
 
-    public void start() {
-        engine.start();
-        airConditioner.start();
+    public void turnOn() {
+        power.turnOnPower();
+        light.turnOnLight();
     }
+    
+    public void turnOff() {
+        power.turnOffPower();
+        light.turnOffLight();
+    }
+
 }
 
 // Chương trình chính để kiểm tra
 public class Main {
     public static void main(String[] args) {
         Car car = new Car();
-        car.start();
+        car.turnOn();
     }
 }
 
 
+```
+**Output**
 
+```
+Power is On 
+Light is On 
 ```
